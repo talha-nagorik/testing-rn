@@ -9,7 +9,7 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 
-import { RetroColors } from '@/constants/theme';
+import { formatNumber, getNumberColor } from '@/utils/counter-utils';
 
 const { width } = Dimensions.get('window');
 
@@ -113,18 +113,6 @@ export default function CounterDisplay({ value, isAnimating }: CounterDisplayPro
       opacity: combinedOpacity,
     };
   });
-
-  const formatNumber = (num: number): string => {
-    const absNum = Math.abs(num);
-    const sign = num < 0 ? '−' : '';
-    return `${sign}${absNum.toString().padStart(4, '0')}`;
-  };
-
-  const getNumberColor = (num: number): string => {
-    if (num < 0) return RetroColors.neon.magenta;
-    if (num !== 0 && num % 10 === 0) return RetroColors.neon.yellow;
-    return RetroColors.neon.cyan;
-  };
 
   return (
     <View style={styles.container}>
