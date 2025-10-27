@@ -1,6 +1,6 @@
 /**
- * Below are the colors that are used in the app. The colors are defined in the light and dark mode.
- * There are many other ways to style your app. For example, [Nativewind](https://www.nativewind.dev/), [Tamagui](https://tamagui.dev/), [unistyles](https://reactnativeunistyles.vercel.app), etc.
+ * Retro 80s Arcade Theme
+ * Features neon colors, dark backgrounds, and arcade-style aesthetics
  */
 
 import { Platform } from 'react-native';
@@ -24,6 +24,27 @@ export const Colors = {
     icon: '#9BA1A6',
     tabIconDefault: '#9BA1A6',
     tabIconSelected: tintColorDark,
+  },
+};
+
+// Retro Arcade Theme Colors
+export const RetroColors = {
+  neon: {
+    cyan: '#00fff0',
+    magenta: '#ff00ff',
+    yellow: '#ffff00',
+    green: '#00ff00',
+    pink: '#ff00ff',
+    blue: '#0070ff',
+  },
+  background: {
+    dark: '#0a0012',
+    darker: '#050008',
+    purple: '#1a0a2e',
+  },
+  grid: {
+    primary: '#1a0a2e',
+    secondary: '#2d1a4a',
   },
 };
 
