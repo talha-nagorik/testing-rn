@@ -1,7 +1,8 @@
-import { RetroColors } from '@/constants/theme';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import Animated from 'react-native-reanimated';
+
+import { RetroColors } from '@/constants/theme';
 
 export default function CounterHeader() {
   return (
