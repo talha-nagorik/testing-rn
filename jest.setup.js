@@ -41,6 +41,39 @@ jest.mock('expo-constants', () => ({
   },
 }));
 
+// Mock expo-web-browser
+jest.mock('expo-web-browser', () => ({
+  openBrowserAsync: jest.fn().mockResolvedValue(undefined),
+  WebBrowserPresentationStyle: {
+    AUTOMATIC: 'automatic',
+  },
+}));
+
+// Mock expo-router Link
+jest.mock('expo-router', () => ({
+  Link: ({ children, onPress, href, testID, ...props }) => {
+    const React = require('react');
+    const { Text, TouchableOpacity } = require('react-native');
+    return (
+      <TouchableOpacity 
+        testID={testID || "external-link"} 
+        onPress={(event) => {
+          // Mock event object with preventDefault
+          const mockEvent = {
+            preventDefault: jest.fn(),
+            ...event
+          };
+          onPress?.(mockEvent);
+        }} 
+        {...props}
+      >
+        <Text>{children}</Text>
+      </TouchableOpacity>
+    );
+  },
+  Href: {},
+}));
+
 // Mock react-native-reanimated
 // This provides a complete mock for react-native-reanimated to prevent animation-related issues
 jest.mock('react-native-reanimated', () => {
