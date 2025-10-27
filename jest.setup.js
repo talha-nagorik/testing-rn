@@ -41,6 +41,63 @@ jest.mock('expo-constants', () => ({
   },
 }));
 
+// Mock react-native-reanimated
+// This provides a complete mock for react-native-reanimated to prevent animation-related issues
+jest.mock('react-native-reanimated', () => {
+  const Reanimated = require('react-native-reanimated/mock');
+
+  // Store original setTimeout to restore later
+  
+  // Mock setTimeout to prevent open handles
+  global.setTimeout = jest.fn((callback, delay) => {
+    // Immediately execute callbacks to prevent open handles
+    if (typeof callback === 'function') {
+      callback();
+    }
+    return 1; // Return a mock timer ID
+  });
+
+  // Mock clearTimeout as well
+  global.clearTimeout = jest.fn();
+
+  return {
+    ...Reanimated,
+    // Ensure all animation functions are properly mocked
+    withTiming: jest.fn((value, config, callback) => {
+      if (callback) callback();
+      return value;
+    }),
+    withSpring: jest.fn((value, config) => value),
+    withSequence: jest.fn((...animations) => animations[animations.length - 1]),
+    withRepeat: jest.fn((animation, count) => animation),
+    withDelay: jest.fn((delay, animation) => animation),
+    runOnJS: jest.fn((fn) => fn),
+    runOnUI: jest.fn((fn) => fn),
+    useSharedValue: jest.fn((initialValue) => ({ value: initialValue })),
+    useAnimatedStyle: jest.fn((styleFactory) => ({})),
+    useAnimatedProps: jest.fn((propsFactory) => ({})),
+    useDerivedValue: jest.fn((derivedValueFactory) => ({ value: derivedValueFactory() })),
+    useAnimatedGestureHandler: jest.fn((handlers) => handlers),
+    useAnimatedScrollHandler: jest.fn((handlers) => handlers),
+    useAnimatedReaction: jest.fn(),
+    useAnimatedRef: jest.fn(() => ({ current: null })),
+    useWorkletCallback: jest.fn((callback) => callback),
+    interpolate: jest.fn((value, inputRange, outputRange) => outputRange[0]),
+    Extrapolation: {
+      EXTEND: 'extend',
+      CLAMP: 'clamp',
+      IDENTITY: 'identity',
+    },
+    Easing: {
+      linear: jest.fn(),
+      ease: jest.fn(),
+      quad: jest.fn(),
+      cubic: jest.fn(),
+    },
+    createAnimatedComponent: jest.fn((Component) => Component),
+  };
+});
+
 // Global test timeout
 // Increase timeout for tests that involve async operations
 jest.setTimeout(10_000);
